@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>LOOPING — Simulator</title>
+<style>
+:root{--c:#00d8ff;--bg:#030607;--panel:#091014;--muted:#8b9aa0}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% 28%,#10262d 0,#05090b 34%,#020303 72%);color:#f4f7f8;font-family:Inter,ui-sans-serif,system-ui,-apple-system,sans-serif;min-height:100vh}
+.app{max-width:430px;margin:auto;min-height:100vh;padding:24px 22px 92px}.brand{letter-spacing:.42em;font-weight:300;font-size:24px}.brand i{font-style:normal;color:var(--c);text-shadow:0 0 14px var(--c)}.tag{font-size:8px;letter-spacing:.32em;color:#b8c4c7;margin-top:4px}
+.top{display:flex;justify-content:space-between;align-items:start}.mode{font-size:10px;border:1px solid #42606a;border-radius:16px;padding:7px 10px;color:#b9c8cd}
+.orbwrap{height:410px;display:grid;place-items:center;position:relative}.orb{width:275px;height:275px;border-radius:50%;position:relative;display:grid;place-items:center;background:radial-gradient(circle at 36% 28%,#28434b 0,#10191d 22%,#050708 58%,#000 100%);box-shadow:inset -20px -24px 45px #000,inset 15px 14px 30px #29444b,0 0 30px #00d8ff20;touch-action:none}
+.ring,.ring2{position:absolute;border-radius:50%;inset:-14px;border:1px solid #69eaff55;box-shadow:0 0 12px #00d8ff44;animation:spin 15s linear infinite}.ring:after{content:"";position:absolute;width:12px;height:12px;border-radius:50%;background:var(--c);box-shadow:0 0 15px var(--c);top:25px;right:24px}.ring2{inset:-30px;border-style:dashed;opacity:.38;animation:spin 22s linear infinite reverse}.orbit{position:absolute;width:340px;height:125px;border:1px solid #37e4ff55;border-radius:50%;transform:rotate(26deg);animation:pulse 4s ease-in-out infinite}
+.core{text-align:center;z-index:3;pointer-events:none}.eyebrow{font-size:10px;letter-spacing:.3em;color:#b7c6ca}.amount{font-size:28px;font-weight:300;margin:10px 0}.progress{font-family:ui-monospace,monospace;font-size:10px;color:#a8f3ff}
+@keyframes spin{to{transform:rotate(360deg)}}@keyframes pulse{50%{opacity:.4;transform:rotate(30deg) scale(1.03)}}
+.buttons{display:grid;gap:12px}.btn{width:100%;padding:17px;border-radius:15px;border:1px solid #789099;background:#071014;color:#f5f8f9;font-size:16px}.btn.primary{color:var(--c);border-color:var(--c);box-shadow:inset 0 0 18px #00d8ff16,0 0 10px #00d8ff22}
+.screen{display:none}.screen.active{display:block}.card{margin-top:26px;border:1px solid #26383e;border-radius:20px;padding:20px;background:#071014cc}.card h2{font-weight:400;margin:0 0 8px}.card p{color:#91a1a6;font-size:13px;line-height:1.55}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.metric{border:1px solid #1f353c;border-radius:14px;padding:14px}.metric b{display:block;font-size:19px;font-weight:400}.metric small{color:#819298}
+nav{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:min(430px,100%);display:grid;grid-template-columns:repeat(5,1fr);background:#030708ed;border-top:1px solid #18282d;padding:10px 5px calc(10px + env(safe-area-inset-bottom));backdrop-filter:blur(18px)}
+nav button{border:0;background:none;color:#7f9298;font-size:10px;padding:8px 1px}nav button.on{color:var(--c)}nav span{display:block;font-size:19px;margin-bottom:2px}
+.hint{text-align:center;font-size:10px;color:#62757b;letter-spacing:.13em;margin-top:-25px;margin-bottom:20px}
+</style></head>
+<body><main class="app">
+<section id="home" class="screen active">
+<div class="top"><div><div class="brand">L<i>∞</i>PING</div><div class="tag">THE MONEY KEEPS MOVING.</div></div><div class="mode">DIDÁTICO</div></div>
+<div class="orbwrap"><div class="orbit"></div><div class="orb" id="orb"><div class="ring"></div><div class="ring2"></div><div class="core"><div class="eyebrow">META DO CICLO · #000135</div><div class="amount">R$ 100.000.000</div><div class="progress" id="progress">R$ 73.724.325 · 74% ARRECADADO</div></div></div></div>
+<div class="hint">TOQUE E ARRASTE A ESFERA</div>
+<div class="buttons"><button class="btn primary" data-go="simulate">Entrar</button><button class="btn" data-go="wallet">Criar conta</button><button class="btn" data-go="simulate">◉ &nbsp; Simulador</button></div>
+</section>
+<section id="simulate" class="screen"><div class="brand">L<i>∞</i>PING</div><div class="card"><h2>Simulador</h2><p>Motor demonstrativo. O principal não é utilizado para financiar premiações. Valores desta interface são simulação.</p><div class="grid"><div class="metric"><small>Meta</small><b>R$ 100 mi</b></div><div class="metric"><small>Progresso</small><b id="pct">74%</b></div><div class="metric"><small>Janela</small><b>7–56 dias</b></div><div class="metric"><small>Impacto</small><b>4%</b></div></div></div><button class="btn primary" id="advance">Avançar simulação +1%</button></section>
+<section id="cycles" class="screen"><div class="brand">CICLOS</div><div class="card"><h2>Círculos de participação</h2><p>Visualização demonstrativa das opções 10 · 100 · 1.000 · 10.000. A trava de mudança ocorre após a meta ultrapassar 50% para participantes já posicionados.</p><div class="grid"><div class="metric"><b>10</b><small>Círculo</small></div><div class="metric"><b>100</b><small>Círculo</small></div><div class="metric"><b>1.000</b><small>Círculo</small></div><div class="metric"><b>10.000</b><small>Círculo</small></div></div></div></section>
+<section id="wallet" class="screen"><div class="brand">CARTEIRA</div><div class="card"><h2>Obsidian</h2><p>Carteira demonstrativa — sem movimentação de dinheiro real.</p><div class="grid"><button class="btn">Depositar</button><button class="btn">Sacar</button><button class="btn">Pix</button><button class="btn">Extrato</button></div></div></section>
+<section id="proof" class="screen"><div class="brand">PROOF</div><div class="card"><h2>Transparência</h2><p>Área visual para evidências, freeze, root, auditoria e impacto. Nesta build, controles criptográficos de produção não são reivindicados.</p><div class="grid"><div class="metric"><small>Estado</small><b>DEMO</b></div><div class="metric"><small>Impacto</small><b>4%</b></div></div></div></section>
+</main>
+<nav><button class="on" data-go="home"><span>◉</span>Início</button><button data-go="simulate"><span>⌁</span>Simular</button><button data-go="cycles"><span>↻</span>Ciclos</button><button data-go="wallet"><span>▭</span>Carteira</button><button data-go="proof"><span>⬡</span>Proof</button></nav>
+<script>
+const screens=[...document.querySelectorAll('.screen')], nav=[...document.querySelectorAll('nav button')];
+function go(id){screens.forEach(x=>x.classList.toggle('active',x.id===id));nav.forEach(x=>x.classList.toggle('on',x.dataset.go===id));scrollTo(0,0)}
+document.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>go(b.dataset.go));
+let p=74;document.querySelector('#advance').onclick=()=>{p=p>=100?1:p+1;document.querySelector('#pct').textContent=p+'%';document.querySelector('#progress').textContent='R$ '+(p*1000000).toLocaleString('pt-BR')+' · '+p+'% ARRECADADO'};
+let orb=document.querySelector('#orb'),down=false,last=0,rot=0;
+orb.onpointerdown=e=>{down=true;last=e.clientX;orb.setPointerCapture(e.pointerId)};
+orb.onpointermove=e=>{if(!down)return;rot+=(e.clientX-last)*.25;last=e.clientX;orb.style.transform='rotateY('+rot+'deg) scale(1.015)'};
+orb.onpointerup=()=>{down=false;orb.style.transform='rotateY('+rot+'deg) scale(1)'};
+</script></body></html>
